@@ -24,8 +24,11 @@ function init(){
   var player;
   var cursors;
   var stars;
+  var scoreText;
+  var bombs;
 
 }
+  var score=0;
 
 function preload(){
   this.load.image("background", "assets/ciel.jpg");
@@ -33,6 +36,7 @@ function preload(){
   this.load.spritesheet('perso',"assets/eren.png",
 {frameWidth: 22, frameHeight: 31});
   this.load.image("star", "assets/star.png");
+  this.load.image("bombe", "assets/bombe.png");
 }
 
 function create(){
@@ -63,7 +67,6 @@ function create(){
     key: 'stop',
     frames: [{key : 'perso', frame:0}],
     frameRate: 20
-
   });
 
   stars = this.physics.add.group({
@@ -76,7 +79,12 @@ function create(){
   this.physics.add.collider(stars, platforms);
   this.physics.add.overlap(player, stars, collectstar, null, this);
 
+  scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
+
+bombes = this.physics.add.group();
+ this.physics.add.collider(player, bombes, hitbombes, null, this);
+ this.physics.add.collider(bombes, platforms);
 
 
 }
@@ -84,10 +92,34 @@ function create(){
 function collectstar(player, star) {
   star.disableBody(true, true);
 
-  });
+    score += 10;
+    scoreText.setText('Score: ' + score);
 
+    if (stars.countActive(true) === 0)
+    {
+        stars.children.iterate(function (child) {
 
+            child.enableBody(true, child.x, 0, true, true);
 
+        });
+
+        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+        var bomb = bombs.create(x, 16, 'bombes');
+        bomb.setBounce(1);
+        bomb.setCollideWorldBounds(true);
+        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+
+    }
+
+}
+
+function hitbombes(){
+    this.physics.pause();
+
+    player.setTint(0xff0000);
+
+    player.anims.play('stop');
 }
 
 function update(){
@@ -109,6 +141,5 @@ function update(){
   if (cursors.up.isDown && player.body.touching.down) {
     player.setVelocityY(-500);
   }
-  if(!player.body.touching.down)
 
 }
