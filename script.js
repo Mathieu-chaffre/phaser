@@ -20,18 +20,19 @@ let config={
 let game = new Phaser.Game(config);
 
 function init(){
-  let platforms;
-  let player;
-  let cursors;
+  var platforms;
+  var player;
+  var cursors;
+  var stars;
 
 }
 
 function preload(){
   this.load.image("background", "assets/ciel.jpg");
   this.load.image('sol', "assets/platforme.png");
-  this.load.spritesheet("perso","assets/eren.png",
+  this.load.spritesheet('perso',"assets/eren.png",
 {frameWidth: 22, frameHeight: 31});
-  this.load.image('stars', "assets/star.png");
+  this.load.image("star", "assets/star.png");
 }
 
 function create(){
@@ -65,10 +66,12 @@ function create(){
   });
 
   stars = this.physics.add.group({
-    key: 'etoile',
+    key: 'star',
     repeat : 12,
     setXY: {x: 12, y: 0, stepX:70, stepY: 10}
   });
+
+
   this.physics.add.collider(stars, platforms);
   this.physics.add.overlap(player, stars, collectstar, null, this);
 
@@ -84,16 +87,22 @@ function collectstar(player, star) {
 function update(){
   if (cursors.left.isDown) {
     player.setVelocityX(-320);
+    player.anims.play('gauche', true);
+    player.setFlipX(false);
   }
   else if (cursors.right.isDown) {
     player.setVelocityX(320);
+    player.anims.play('gauche', true);
+    player.setFlipX(true);
   }
   else {
     player.setVelocityX(0);
+    player.anims.play('stop', true);
   }
 
   if (cursors.up.isDown && player.body.touching.down) {
     player.setVelocityY(-500);
   }
+  if(!player.body.touching.down)
 
 }
