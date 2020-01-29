@@ -63,6 +63,7 @@ function create(){
     key: 'stop',
     frames: [{key : 'perso', frame:0}],
     frameRate: 20
+
   });
 
   stars = this.physics.add.group({
@@ -82,6 +83,11 @@ function create(){
 
 function collectstar(player, star) {
   star.disableBody(true, true);
+
+  });
+
+
+
 }
 
 function update(){
