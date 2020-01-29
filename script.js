@@ -30,7 +30,7 @@ function preload(){
   this.load.image("background", "assets/ciel.jpg");
   this.load.image('sol', "assets/platforme.png");
   this.load.spritesheet("perso","assets/eren.png",
-{frameWidth: 24, frameHeight: 32});
+{frameWidth: 22, frameHeight: 31});
 }
 
 function create(){
@@ -49,17 +49,40 @@ function create(){
 
   cursors = this.input.keyboard.createCursorKeys();
 
+
+  this.anims.create({
+    key: 'gauche',
+    frames: this.anims.generateFrameNumbers('perso',{start: 1, end:3}),
+    frameRate: 10,
+    repeat:-1
+
+  });
+
+  this.anims.create({
+    key: 'stop',
+    frames: [{key : 'perso', frame:0}],
+    frameRate: 20
+
+  });
+
+
+
 }
 
 function update(){
   if (cursors.left.isDown) {
     player.setVelocityX(-320);
+    player.anims.play('gauche', true);
+    player.setFlipX(false);
   }
   else if (cursors.right.isDown) {
     player.setVelocityX(320);
+    player.anims.play('gauche', true);
+    player.setFlipX(true);
   }
   else {
     player.setVelocityX(0);
+    player.anims.play('stop', true);
   }
 
   if (cursors.up.isDown && player.body.touching.down) {
