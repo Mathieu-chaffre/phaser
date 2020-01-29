@@ -62,6 +62,7 @@ function create(){
     key: 'stop',
     frames: [{key : 'perso', frame:0}],
     frameRate: 20
+
   });
 
   stars = this.physics.add.group({
@@ -79,17 +80,27 @@ function create(){
 
 function collectstar(player, star) {
   star.disableBody(true, true);
+
+  });
+
+
+
 }
 
 function update(){
   if (cursors.left.isDown) {
     player.setVelocityX(-320);
+    player.anims.play('gauche', true);
+    player.setFlipX(false);
   }
   else if (cursors.right.isDown) {
     player.setVelocityX(320);
+    player.anims.play('gauche', true);
+    player.setFlipX(true);
   }
   else {
     player.setVelocityX(0);
+    player.anims.play('stop', true);
   }
 
   if (cursors.up.isDown && player.body.touching.down) {
