@@ -31,6 +31,7 @@ function preload(){
   this.load.image('sol', "assets/platforme.png");
   this.load.spritesheet("perso","assets/eren.png",
 {frameWidth: 22, frameHeight: 31});
+  this.load.image('stars', "assets/star.png");
 }
 
 function create(){
@@ -55,13 +56,30 @@ function create(){
     frames: this.anims.generateFrameNumbers('perso',{start: 1, end:3}),
     frameRate: 10,
     repeat:-1
-
   });
 
   this.anims.create({
     key: 'stop',
     frames: [{key : 'perso', frame:0}],
     frameRate: 20
+
+  });
+
+  stars = this.physics.add.group({
+    key: 'etoile',
+    repeat : 12,
+    setXY: {x: 12, y: 0, stepX:70, stepY: 10}
+  });
+  this.physics.add.collider(stars, platforms);
+  this.physics.add.overlap(player, stars, collectstar, null, this);
+
+
+
+
+}
+
+function collectstar(player, star) {
+  star.disableBody(true, true);
 
   });
 
